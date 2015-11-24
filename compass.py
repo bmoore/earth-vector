@@ -28,10 +28,18 @@ def haversine(pointA, pointB):
     lat2 = math.radians(pointB[0])
     lon1 = math.radians(pointA[1])
     lon2 = math.radians(pointB[1])
-    # haversine formula 
-    dlon = lon2 - lon1 
-    dlat = lat2 - lat1 
+    # haversine formula
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
     a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
-    c = 2 * asin(sqrt(a)) 
+    c = 2 * asin(sqrt(a))
     km = 6367 * c
     return km
+
+# lizzylou gonna write the velocity shiznit
+def velocity(pointA, pointB):
+    km = haversine(pointA,pointB)
+    time_elapsed = (pointB[2] - pointA[2])
+    vel1 = km/time_elapsed #km/s
+    veloc = (vel1*(100000)) #cm/s
+    return veloc
