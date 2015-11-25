@@ -1,14 +1,22 @@
 import compass
+import mapper
 import csv
 
 boundary = (43.125873, -70.853216)
 points = []
 
+# Build a list that is the difference between the points
 def build_diff(point1, point2):
-    line = []
+    trial_1 = point1[3]
+    trial_2 = point2[3]
+    if (trial_1 is not trial_2):
+        return []
+
+    diff = []
     distance = compass.haversine(point1, point2)
     bearing = compass.bearing(point1, point2)
     velocity =  compass.velocity(point1, point2)
+    minutes = (point2[2] - point1[2]) / 60
 
     # This tests whether the first point is east or west of the boundary
     if (boundary[1] < point1[1]):
@@ -34,16 +42,19 @@ def build_diff(point1, point2):
         distance = distance * -1
         velocity = velocity * -1
 
-    line.append(place)
-    line.append(distance)
-    line.append(bearing)
-    line.append(velocity)
-    line.append(direction)
-    line.append((point2[2] - point1[2])/60)
-    line.append(point1[3])
-    line.append(point1[0])
-    line.append(point1[1])
-    return line
+    diff.append(place)
+    diff.append(distance)
+    diff.append(bearing)
+    diff.append(velocity)
+    diff.append(direction)
+    diff.append(minutes)
+    diff.append(point1[3])
+    diff.append(point1[0])
+    diff.append(point1[1])
+
+    mapper.plot(point1, point2)
+
+    return diff
 
 
 # Read the drifter.csv file into points.
@@ -73,3 +84,5 @@ with open("output.csv", "w") as output:
     writer = csv.writer(output, lineterminator='\n')
     for val in sheet:
         writer.writerow(val)
+
+mapper.display()
