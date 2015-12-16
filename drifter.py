@@ -82,7 +82,7 @@ def build_diff(point1, point2):
 
 points = []
 # Read the drifter.csv file into points.
-with open('drifter.csv', 'rb') as csvfile:
+with open('drifter.csv', 'rt') as csvfile:
     reader = csv.reader(csvfile, delimiter=',', quotechar='"')
     for row in reader:
         try:
@@ -94,6 +94,6 @@ with open('drifter.csv', 'rb') as csvfile:
             trial = (row[3])
             points.append((lat, lon, timestamp, trial, row[4]))
         except ValueError as e:
-            print e
+            print(e)
 
 points = sorted(points, key=lambda x: x[2])

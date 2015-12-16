@@ -8,7 +8,7 @@ for i, value in enumerate(points):
         line = build_diff(points[i],points[i+1])
         sheet.append(line)
     except (IndexError, ValueError) as e:
-        print e
+        print(e)
 
 with open("output.csv", "w") as output:
     writer = csv.writer(output, lineterminator='\n')
