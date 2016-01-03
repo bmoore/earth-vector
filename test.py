@@ -13,5 +13,6 @@ for i, value in enumerate(points):
 with open("output.csv", "w") as output:
     writer = csv.writer(output, lineterminator='\n')
     for val in sheet:
-        writer.writerow(val)
+	if val:
+            writer.writerow(val)
 
