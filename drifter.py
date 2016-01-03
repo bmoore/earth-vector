@@ -28,24 +28,25 @@ def stream_direction(point1, point2, bearing):
 
     return direction, place
 
-@helpers.static_vars(index=0, tide=[], direction='I')
+@helpers.static_vars(index=0, tide=[], direction='I', t0=[])
 def tide_at_point(point):
     tide_at_point.tide = tides[tide_at_point.index]
     tide_time = tide_at_point.tide[0]
     point_time = point[2]
 
     while point_time > tide_time:
-        t0 = tide_at_point.tide
+        tide_at_point.t0 = tide_at_point.tide
         tide_at_point.index += 1
         tide_at_point.tide = tides[tide_at_point.index]
         tide_time = tide_at_point.tide[0]
 
-        if t0[3] is 'L' and tide_at_point.tide[3] is 'H':
+        if tide_at_point.t0[3] is 'L' and tide_at_point.tide[3] is 'H':
             tide_at_point.direction = 'I'
         else:
             tide_at_point.direction = 'O'
 
-    return tide_at_point.direction
+    time_offset = point_time - tide_at_point.t0[0]
+    return time_offset, tide_at_point.direction
 
 # Build a list that is the difference between the points
 def build_diff(point1, point2):
@@ -60,7 +61,7 @@ def build_diff(point1, point2):
     velocity =  compass.velocity(point1, point2)
     minutes = (point2[2] - point1[2]) / 60
     direction, place = stream_direction(point1, point2, bearing)
-    tide = tide_at_point(point1)
+    tide_offset, tide = tide_at_point(point1)
 
     if (direction is 'Downstream' ):
         distance = distance * -1
@@ -74,6 +75,7 @@ def build_diff(point1, point2):
     diff.append(minutes)
     diff.append(point1[4])
     diff.append(tide)
+    diff.append(tide_offset)
     diff.append(point1[3])
     diff.append(point1[0])
     diff.append(point1[1])
