@@ -29,13 +29,18 @@ def stream_direction(point1, point2, bearing):
 
     return direction, place
 
-@helpers.static_vars(index=0, tide=[], direction='I', t0=[])
+@helpers.static_vars(index=0, tide=[], direction='I', t0=[], cycle={})
 def tide_at_point(point):
+    trial = point[3]
+    if trial not in tide_at_point.cycle.keys():
+        tide_at_point.cycle.update({trial: {}})
     tide_at_point.tide = tides[tide_at_point.index]
     tide_time = tide_at_point.tide[0]
     point_time = point[2]
 
+    fresh = False
     while point_time > tide_time:
+        fresh = True
         tide_at_point.t0 = tide_at_point.tide
         tide_at_point.index += 1
         tide_at_point.tide = tides[tide_at_point.index]
@@ -47,15 +52,18 @@ def tide_at_point(point):
             tide_at_point.direction = 'O'
 
     time_offset = point_time - tide_at_point.t0[0]
-    return time_offset, tide_at_point.direction
+    tide_cycle = ''.join([tide_at_point.direction, str(int(math.ceil(time_offset/3600)))])
+    if tide_cycle not in tide_at_point.cycle[trial].keys():
+        tide_at_point.cycle[trial].update({tide_cycle:0})
+    if fresh:
+        tide_at_point.cycle[trial][tide_cycle] += 1
+    return time_offset, tide_at_point.direction, tide_cycle, '-'.join([tide_cycle, str(tide_at_point.cycle[trial][tide_cycle])])
 
 # Build a list that is the difference between the points
-@helpers.static_vars(static={})
 def build_diff(point1, point2):
     trial_1 = point1[3]
     trial_2 = point2[3]
     if (trial_1 is not trial_2):
-        build_diff.static = {}
         return []
 
     diff = []
@@ -64,16 +72,11 @@ def build_diff(point1, point2):
     velocity =  compass.velocity(point1, point2)
     minutes = (point2[2] - point1[2]) / 60
     direction, place = stream_direction(point1, point2, bearing)
-    tide_offset, tide = tide_at_point(point1)
+    tide_time_offset, tide, tide_offset, tide_offset_lap = tide_at_point(point1)
 
     if (direction is 'Downstream' ):
         distance = distance * -1
         velocity = velocity * -1
-
-    tide_cycle = ''.join([tide, str(int(math.ceil(tide_offset/3600)))])
-    if tide_cycle not in build_diff.static.keys():
-        build_diff.static.update({tide_cycle:0})
-    build_diff.static[tide_cycle] += 1
 
     diff.append(place)
     diff.append(distance)
@@ -83,9 +86,9 @@ def build_diff(point1, point2):
     diff.append(minutes)
     diff.append(point1[4])
     diff.append(tide)
+    diff.append(tide_time_offset)
     diff.append(tide_offset)
-    diff.append(tide_cycle)
-    diff.append('-'.join([tide_cycle, str(build_diff.static[tide_cycle])]))
+    diff.append(tide_offset_lap)
     diff.append(point1[3])
     diff.append(point1[0])
     diff.append(point1[1])
