@@ -1,4 +1,5 @@
 import csv
+import math
 import time
 import compass
 import helpers
@@ -49,10 +50,12 @@ def tide_at_point(point):
     return time_offset, tide_at_point.direction
 
 # Build a list that is the difference between the points
+@helpers.static_vars(static={})
 def build_diff(point1, point2):
     trial_1 = point1[3]
     trial_2 = point2[3]
     if (trial_1 is not trial_2):
+        build_diff.static = {}
         return []
 
     diff = []
@@ -67,6 +70,11 @@ def build_diff(point1, point2):
         distance = distance * -1
         velocity = velocity * -1
 
+    tide_cycle = ''.join([tide, str(int(math.ceil(tide_offset/3600)))])
+    if tide_cycle not in build_diff.static.keys():
+        build_diff.static.update({tide_cycle:0})
+    build_diff.static[tide_cycle] += 1
+
     diff.append(place)
     diff.append(distance)
     diff.append(bearing)
@@ -76,6 +84,8 @@ def build_diff(point1, point2):
     diff.append(point1[4])
     diff.append(tide)
     diff.append(tide_offset)
+    diff.append(tide_cycle)
+    diff.append('-'.join([tide_cycle, str(build_diff.static[tide_cycle])]))
     diff.append(point1[3])
     diff.append(point1[0])
     diff.append(point1[1])
