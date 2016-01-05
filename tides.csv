@@ -29,6 +29,9 @@ Dover Pt,9/6/08,11:38 AM,1.2,L
 Dover Pt,9/6/08,5:49 AM,5.7,H
 Dover Pt,9/6/08,6:00 PM,6.2,H
 Dover Pt,9/7/08,12:23 AM,0.9,L
+Dover Pt,9/7/08,6:43 AM,5.4,H
+Dover Pt,9/7/08,12:29 PM,1.5,L
+Dover Pt,9/7/08,6:53 PM,6,H
 Dover Pt,9/11/08,4:14 AM,0.9,L
 Dover Pt,9/11/08,4:18 PM,1.3,L
 Dover Pt,9/11/08,10:32 AM,5.5,H
@@ -53,6 +56,9 @@ Dover Pt,6/25/09,9:18 PM,-0.2,L
 Dover Pt,6/25/09,3:28 PM,7.1,H
 Dover Pt,6/25/09,2:43 AM,8.1,H
 Dover Pt,6/26/09,3:40 AM,7.9,H
+Dover Pt,6/26/09,9:59 AM,-0.9,L
+Dover Pt,6/26/09,4:24 PM,7.1,H
+Dover Pt,6/26/09,10:17 PM,-0.1,L
 Dover Pt,7/1/09,2:29 AM,0.4,L
 Dover Pt,7/1/09,2:42 PM,0.7,L
 Dover Pt,7/1/09,8:46 AM,6.1,H
@@ -99,7 +105,7 @@ Dover Pt,8/13/13,5:48 PM,6.93,H
 Dover Pt,8/14/13,12:01 AM,0.24,L
 Dover Pt,8/14/13,12:16 PM,0.34,L
 Dover Pt,8/14/13,6:17 AM,6.28,H
-Dover Pt,8/14/13,6:39 PM,7,
+Dover Pt,8/14/13,6:39 PM,7,H
 Dover Pt,8/15/13,12:58 AM,0.2,L
 Dover Pt,8/15/13,7:16 AM,6.1,H
 Dover Pt,8/15/13,1:13 PM,0.5,L
@@ -197,12 +203,13 @@ Dover Pt,8/14/14,9:49 AM,-0.93,L
 Dover Pt,8/14/14,10:17 PM,-0.66,L
 Dover Pt,8/14/14,4:12 PM,7.68,H
 Dover Pt,8/14/14,3:42 AM,7.84,H
-Dover Pt,8/14/14,2:31 AM,9.64,H
 Dover Pt,8/15/14,10:41 AM,-0.59,L
 Dover Pt,8/15/14,11:14 PM,-0.39,L
 Dover Pt,8/15/14,4:37 AM,7.47,H
 Dover Pt,8/15/14,5:06 PM,7.51,H
 Dover Pt,8/16/14,5:35 AM,7.03,H
+Dover Pt,8/16/14,11:36 AM,-0.19,L
+Dover Pt,8/16/14,6:02 PM,7.27,H
 Atlantic Heights ,9/16/15,8:21 PM,0.45,L
 Atlantic Heights ,9/16/15,8:00 AM,0.54,L
 Atlantic Heights ,9/16/15,2:06 AM,7.64,H
@@ -252,3 +259,5 @@ Atlantic Heights ,10/8/15,9:25 AM,7.29,H
 Atlantic Heights ,10/8/15,9:43 PM,7.6,H
 Atlantic Heights ,10/9/15,3:50 AM,0.53,L
 Atlantic Heights ,10/9/15,10:13 AM,7.44,H
+Atlantic Heights ,10/9/15,4:10 PM,0.67,L
+Atlantic Heights ,10/9/15,10:32 PM,7.66,H
