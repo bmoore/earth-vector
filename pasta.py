@@ -1,5 +1,5 @@
 import csv
-import mapper
+from mapper import Mapper
 
 river = []
 lower = []
@@ -18,11 +18,14 @@ with open('pasta.csv', 'rt') as csvfile:
         except ValueError as e:
             print(e)
 
+river_map = Mapper()
+river_map.trace(river)
+river_map.display('river')
 
-for i, value in enumerate(river):
-    try:
-        mapper.plot(river[i], river[i+1])
-    except (IndexError, ValueError) as e:
-        print(e)
+lower_map = Mapper()
+lower_map.trace(lower)
+lower_map.display('lower')
 
-mapper.display()
+upper_map = Mapper()
+upper_map.trace(upper)
+upper_map.display('upper')

@@ -1,49 +1,37 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import animation
 from matplotlib.patches import Polygon
 from matplotlib.collections import PatchCollection
 from matplotlib.patches import PathPatch
 from mpl_toolkits.basemap import Basemap
 
-# Great Bay 43.0669N, 70.8686W
-m = Basemap(llcrnrlon=-70.96,llcrnrlat=43.,urcrnrlon=-70.55,urcrnrlat=43.2,
-            projection='merc', resolution ='c')
-fig = plt.figure()
-ax = fig.add_subplot(111)
-m.drawcoastlines()
-m.drawmapboundary(fill_color='#99ffff')
-m.readshapefile('./n130', 'n130')
-m.fillcontinents(color='#cc9966',lake_color='#99ffff')
+class Mapper:
+    def __init__(self):
+        # Great Bay 43.0669N, 70.8686W
+        self.m = Basemap(llcrnrlon=-70.96,llcrnrlat=43.,urcrnrlon=-70.55,urcrnrlat=43.2, projection='merc', resolution ='f')
+        self.fig = plt.figure()
+        self.ax = self.fig.add_subplot(111)
+        self.m.drawmapboundary(fill_color='#ffffff')
+        self.m.readshapefile('./n130', 'n130')
+        self.m.fillcontinents(color='#cccccc',lake_color='#ffffff')
 
-patches = []
-for info, shape in zip(m.n130_info, m.n130):
-    patches.append(Polygon(np.array(shape), True))
-ax.add_collection(PatchCollection(patches, facecolor= '#99ffff', edgecolor='k', linewidths=0., zorder=2))
+        self.patches = []
+        for info, shape in zip(self.m.n130_info, self.m.n130):
+            self.patches.append(Polygon(np.array(shape), True))
+        self.ax.add_collection(PatchCollection(self.patches, facecolor= '#ffffff', edgecolor='#ffffff', linewidths=0., zorder=2))
 
-def plot(pointA, pointB):
-    m.plot([pointA[1], pointB[1]], [pointA[0], pointB[0]], latlon=True, label='', linewidth=1.5, color='k')
+    def plot(self, pointA, pointB):
+        self.m.plot([pointA[1], pointB[1]], [pointA[0], pointB[0]], latlon=True, label='', linewidth=1, color='#666666')
 
-def display():
-    # draw coastlines, meridians and parallels.
-    plt.title('Drifter Tracks (In Piscataqua River and Great Bay)')
-    plt.show()
+    def trace(self, points):
+        for i, value in enumerate(points):
+            try:
+                self.plot(points[i], points[i+1])
+            except (IndexError, ValueError) as e:
+                print(e)
+        self.m.plot(points[0][1], points[0][0], latlon=True, label='', marker='*', linewidth=.5, color='k')
+        self.m.plot(points[i][1], points[i][0], latlon=True, label='', marker='8', linewidth=.5, color='k')
 
-# For animations
-x, y = m(0,0)
-point = m.plot(x, y, 'ro', markersize=5)[0]
-points = []
-
-def init():
-    point.set_data([], [])
-    return point,
-
-def animate(i):
-    lat = points[i][0]
-    lon = points[i][1]
-    point.set_data(lon, lat)
-    return point
-
-def fly(p):
-    points = p
-    anim = animation.FuncAnimation(plt.gcf(), animate, init_func=init, frames=20, interval=500, blit=True)
+    def display(self, name):
+        # draw coastlines, meridians and parallels.
+        plt.savefig('.'.join([name, 'pdf']), format='pdf')
