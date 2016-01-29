@@ -8,7 +8,7 @@ with open('tides.csv', 'rt') as csvfile:
     for row in reader:
         try:
             datetime = ' '.join([row[1], row[2]])
-            datetime = time.strptime(datetime, '%m/%d/%y %I:%M %p')
+            datetime = time.strptime(datetime, '%Y-%m-%d %I:%M %p')
             tides.append([time.mktime(datetime), datetime, row[3], row[4]])
         except ValueError as e:
             print(e)

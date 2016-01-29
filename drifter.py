@@ -63,7 +63,7 @@ def tide_at_point(point):
 def build_diff(point1, point2):
     trial_1 = point1[3]
     trial_2 = point2[3]
-    if (trial_1 is not trial_2):
+    if trial_1 != trial_2:
         return []
 
     diff = []
