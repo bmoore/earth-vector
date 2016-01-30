@@ -39,6 +39,8 @@ def haversine(pointA, pointB):
 # lizzylou gonna write the velocity shiznit
 def velocity(pointA, pointB):
     km = haversine(pointA,pointB)
+    if not km:
+        return 0
     time_elapsed = (pointB[2] - pointA[2])
     vel1 = km/time_elapsed #km/s
     veloc = (vel1*(100000)) #cm/s

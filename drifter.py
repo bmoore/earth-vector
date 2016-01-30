@@ -79,6 +79,10 @@ def build_diff(point1, point2):
         distance = distance * -1
         velocity = velocity * -1
 
+    tide_hour_offset = math.ceil(tide_time_offset/3600)
+    if tide == 'O':
+        tide_hour_offset += 6
+
     diff.append(place)
     diff.append(distance)
     diff.append(bearing)
@@ -88,8 +92,7 @@ def build_diff(point1, point2):
     diff.append(point1[4])
     diff.append(tide)
     diff.append(tide_time_offset)
-    diff.append(tide_offset)
-    diff.append(tide_offset_lap)
+    diff.append(tide_hour_offset)
     diff.append(point1[3])
     diff.append(point1[0])
     diff.append(point1[1])

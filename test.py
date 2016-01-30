@@ -5,8 +5,13 @@ from drifter import points, build_diff
 sheet = []
 for i, value in enumerate(points):
     try:
-        line = build_diff(points[i],points[i+1])
-        sheet.append(line)
+        if points[i][3] == points[i+1][3]:
+            line = build_diff(points[i],points[i+1])
+            sheet.append(line)
+        else:
+            line = build_diff(points[i],points[i])
+            sheet.append(line)
+            sheet.append([])
     except (IndexError, ValueError) as e:
         print(e)
 
