@@ -11,7 +11,7 @@ for i, value in enumerate(points):
         else:
             line = build_diff(points[i],points[i])
             sheet.append(line)
-            sheet.append([])
+            sheet.append(['-'])
     except (IndexError, ValueError) as e:
         print(e)
 
