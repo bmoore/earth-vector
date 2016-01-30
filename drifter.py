@@ -33,6 +33,7 @@ def stream_direction(point1, point2, bearing):
 def tide_at_point(point):
     trial = point[3]
     if trial not in tide_at_point.cycle.keys():
+        tide_at_point.index = 0
         tide_at_point.cycle.update({trial: {}})
     tide_at_point.tide = tides[tide_at_point.index]
     tide_time = tide_at_point.tide[0]
@@ -111,4 +112,4 @@ with open('drifter.csv', 'rt') as csvfile:
         except ValueError as e:
             print(e)
 
-points = sorted(points, key=lambda x: x[2])
+#points = sorted(points, key=lambda x: x[2])
