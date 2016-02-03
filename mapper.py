@@ -8,7 +8,7 @@ from mpl_toolkits.basemap import Basemap
 class Mapper:
     def __init__(self):
         # Great Bay 43.0669N, 70.8686W
-        self.m = Basemap(llcrnrlon=-70.96,llcrnrlat=43.,urcrnrlon=-70.55,urcrnrlat=43.2, projection='merc', resolution ='f')
+        self.m = Basemap(llcrnrlon=-70.96,llcrnrlat=43.,urcrnrlon=-70.55,urcrnrlat=43.2, projection='merc', resolution ='c')
         self.fig = plt.figure()
         self.ax = self.fig.add_subplot(111)
         self.m.drawmapboundary(fill_color='#ffffff')
@@ -21,7 +21,7 @@ class Mapper:
         self.ax.add_collection(PatchCollection(self.patches, facecolor= '#ffffff', edgecolor='#ffffff', linewidths=0., zorder=2))
 
     def plot(self, pointA, pointB):
-        self.m.plot([pointA[1], pointB[1]], [pointA[0], pointB[0]], latlon=True, label='', linewidth=1, color='#666666')
+        self.m.plot([pointA[1], pointB[1]], [pointA[0], pointB[0]], latlon=True, linewidth=1, color='#666666')
 
     def trace(self, points):
         for i, value in enumerate(points):
