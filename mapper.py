@@ -8,7 +8,7 @@ from mpl_toolkits.basemap import Basemap
 class Mapper:
     def __init__(self):
         # Great Bay 43.0669N, 70.8686W
-        self.m = Basemap(llcrnrlon=-70.96,llcrnrlat=43.,urcrnrlon=-70.55,urcrnrlat=43.2, projection='merc', resolution ='c')
+        self.m = Basemap(llcrnrlon=-70.96,llcrnrlat=43.,urcrnrlon=-70.55,urcrnrlat=43.2, projection='merc', resolution ='f')
         self.fig = plt.figure()
         self.ax = self.fig.add_subplot(111)
         self.m.drawmapboundary(fill_color='#ffffff')
