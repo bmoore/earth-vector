@@ -20,7 +20,7 @@ map.drawparallels(np.arange(-90, 90, 30))
 map.readshapefile('./n130', 'n130')
 map.fillcontinents(color='#cccccc',lake_color='#ffffff')
 
-runtext = ax.text(0.5, 50, '')
+runtext = ax.text(1, 50, '')
 
 points = []
 with open('drifter.csv', 'rt') as csvfile:
@@ -30,7 +30,7 @@ with open('drifter.csv', 'rt') as csvfile:
             if row[2]:
                 lat, lon = float(row[2]), float(row[1])
                 if lat > 10 and lon < 10:
-                    points.append((float(row[2]), float(row[1]), row[0], row[3]))
+                    points.append((float(row[2]), float(row[1]), row[3], row[4]))
         except ValueError as e:
             print(e)
 
