@@ -20,15 +20,17 @@ map.drawparallels(np.arange(-90, 90, 30))
 map.readshapefile('./n130', 'n130')
 map.fillcontinents(color='#cccccc',lake_color='#ffffff')
 
-timetext = ax.text(0.5, 50, '')
+runtext = ax.text(0.5, 50, '')
 
 points = []
-with open('pasta.csv', 'rt') as csvfile:
+with open('drifter.csv', 'rt') as csvfile:
     reader = csv.reader(csvfile, delimiter=',', quotechar='"')
     for row in reader:
         try:
-            if row[6]:
-                points.append((float(row[6]), float(row[7])))
+            if row[2]:
+                lat, lon = float(row[2]), float(row[1])
+                if lat > 10 and lon < 10:
+                    points.append((float(row[2]), float(row[1]), row[0], row[3]))
         except ValueError as e:
             print(e)
 
@@ -38,8 +40,8 @@ for info, shape in zip(map.n130_info, map.n130):
 ax.add_collection(PatchCollection(patches, facecolor= '#ffffff', edgecolor='#ffffff', linewidths=0., zorder=2))
 
 x,y = map(0, 0)
-point = map.plot(x, y, 'ro', markersize=5)[0]
 line = map.plot([], [], lw=2, color="red")[0]
+point = map.plot(x, y, 'ro', markersize=5)[0]
 
 def init():
     point.set_data([], [])
@@ -48,22 +50,25 @@ def init():
 
 # animation function.  This is called sequentially
 xs, ys = [], []
+runs = []
 def animate(i):
     lons = float(points[i][1])
     lats = float(points[i][0])
     x, y = map(lons, lats)
-    if (i == 0):
+    if (points[i][2] not in runs):
+        runs[:] = []
+        runs.append(points[i][2])
         xs[:] = ys[:] = []
     xs.append(x)
     ys.append(y)
     if (i > 0):
         line.set_data(xs, ys)
     point.set_data(x, y)
-    timetext.set_text(i)
-    return (point,timetext,line)
+    runtext.set_text(points[i][2])
+    return (point,runtext,line)
 
 # call the animator.  blit=True means only re-draw the parts that have changed.
 anim = animation.FuncAnimation(plt.gcf(), animate, init_func=init,
-                               frames=len(points), interval=100, blit=True)
+                               frames=len(points), interval=50, blit=True)
 
 plt.show()
