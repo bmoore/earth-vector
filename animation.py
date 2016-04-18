@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.animation as animation
 
-map = Basemap(llcrnrlon=-70.96,llcrnrlat=43.,urcrnrlon=-70.55,urcrnrlat=43.2, projection='merc', resolution ='l')
+map = Basemap(llcrnrlon=-70.96,llcrnrlat=43.,urcrnrlon=-70.55,urcrnrlat=43.2, projection='merc', resolution ='f')
 fig = plt.figure()
 ax = fig.add_subplot(111)
 map.drawcoastlines()
@@ -27,7 +27,7 @@ with open('drifter.csv', 'rt') as csvfile:
     reader = csv.reader(csvfile, delimiter=',', quotechar='"')
     for row in reader:
         try:
-            if row[2]:
+            if row[2] and row[3] == 'LB54':
                 lat, lon = float(row[2]), float(row[1])
                 if lat > 10 and lon < 10:
                     points.append((float(row[2]), float(row[1]), row[3], row[4]))
@@ -37,16 +37,16 @@ with open('drifter.csv', 'rt') as csvfile:
 patches = []
 for info, shape in zip(map.n130_info, map.n130):
     patches.append(Polygon(np.array(shape), True))
-ax.add_collection(PatchCollection(patches, facecolor= '#ffffff', edgecolor='#ffffff', linewidths=0., zorder=2))
+ax.add_collection(PatchCollection(patches, facecolor= '#ffffff', edgecolor='#ffffff', linewidths=1., zorder=2))
 
 x,y = map(0, 0)
-line = map.plot([], [], lw=2, color="red")[0]
-point = map.plot(x, y, 'ro', markersize=5)[0]
+line = map.plot([], [], 'r', lw=2, zorder=5)[0]
+point = map.plot(x, y, 'bo', markersize=5, zorder=10)[0]
 
 def init():
     point.set_data([], [])
     line.set_data([], [])
-    return point, line,
+    return line, point,
 
 # animation function.  This is called sequentially
 xs, ys = [], []
@@ -64,11 +64,13 @@ def animate(i):
     if (i > 0):
         line.set_data(xs, ys)
     point.set_data(x, y)
-    runtext.set_text(points[i][2])
-    return (point,runtext,line)
+    runtext.set_text(points[i][3])
+    return (runtext,line,point)
 
 # call the animator.  blit=True means only re-draw the parts that have changed.
 anim = animation.FuncAnimation(plt.gcf(), animate, init_func=init,
                                frames=len(points), interval=50, blit=True)
 
-plt.show()
+anim.save('animation.gif',writer='imagemagick',fps=30)
+
+#plt.show()
